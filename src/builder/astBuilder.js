@@ -1,18 +1,18 @@
-import * as babylon from 'babylon';
-import { mergeObjectStructures } from 'shared/utils/composition';
-
+import * as babelStandalone from 'babel-standalone';
 import { TOKEN_KEYS } from 'shared/constants';
 import { setupPointer } from 'shared/utils/treeLevelsPointer';
 import { logError } from 'shared/utils/logger';
-import defaultAstConfig from './astParserConfig';
 
-import traverse from 'babel-traverse';
+import es2015 from 'babel-preset-es2015';
 
 export const parseCodeToAST = (code, config = {}) => {
     let ast = [];
 
     try {
-        ast = babylon.parse(code, mergeObjectStructures(defaultAstConfig, config));
+        const newCode = babelStandalone.transform(code, {
+            presets: [es2015]
+        });
+        ast = newCode.ast;
     } catch (e) {
         logError('Error at parseCodeToAST: ' + e.message, e.loc, e.stack);
         throw e;
