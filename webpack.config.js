@@ -25,7 +25,10 @@ const config = {
       {
         test: /(\.jsx|\.js)$/,
         loader: 'babel-loader',
-        exclude: /(node_modules|bower_components)/
+        exclude: /(node_modules|bower_components)/,
+        query: {
+          comments: false
+        }
       }
     ]
   },
@@ -37,7 +40,7 @@ const config = {
     ],
     extensions: ['.json', '.js']
   },
-  mode: 'development'
+  mode: 'production'
 };
 
 module.exports = config;
