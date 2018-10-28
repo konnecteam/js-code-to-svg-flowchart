@@ -1,18 +1,15 @@
-import * as babelStandalone from 'babel-standalone';
+import * as babelParser from '@babel/parser';
 import { TOKEN_KEYS } from 'shared/constants';
 import { setupPointer } from 'shared/utils/treeLevelsPointer';
 import { logError } from 'shared/utils/logger';
-
-import es2015 from 'babel-preset-es2015';
+import defaultAstConfig from './astParserConfig';
+import { mergeObjectStructures } from 'shared/utils/composition';
 
 export const parseCodeToAST = (code, config = {}) => {
     let ast = [];
 
     try {
-        const newCode = babelStandalone.transform(code, {
-            presets: [es2015]
-        });
-        ast = newCode.ast;
+        ast = babelParser.parse(code, mergeObjectStructures(defaultAstConfig, config));
     } catch (e) {
         logError('Error at parseCodeToAST: ' + e.message, e.loc, e.stack);
         throw e;
